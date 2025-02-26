@@ -4,7 +4,9 @@ import type { Report } from "./engine-types/v4/api/IReport";
 import { Request, Response, NextFunction } from 'express';
 import { aceCheck } from './aceChecker';
 import bodyParser from 'body-parser';
-import * as puppeteer from 'puppeteer';
+import * as puppeteer from 'puppeteer-core';
+
+const is_docker = process.env.IS_DOCKER && process.env.IS_DOCKER.toLowerCase() === 'true';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,9 +37,11 @@ app.get('/', (_req, res) => {
 }
  */
 app.post("/scan", asyncHandler(async (req, res) => {
+  console.log("Scanning...");
   const html: string = req.body.html;
-  const guidelineIds: string | string[] = req.body.guidelineIds;
+  const guidelineIds: string | string[] = req.body.guidelineIds || process.env.DEFAULT_GUIDELINE_IDS;
   const report: Report = await aceCheck(html, browser, guidelineIds);
+  console.log("Scan complete.");
   res.json(report);
 }));
 
@@ -48,9 +52,15 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 
 (async () => {
   try {
-    browser = await puppeteer.launch();
+    browser = is_docker ? await puppeteer.launch({
+      headless: true,
+      defaultViewport: null,
+      executablePath: '/usr/bin/google-chrome',
+      args: ['--no-sandbox']
+    }) : await puppeteer.launch();
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      console.log(`Equal access server is running on port ${PORT}`);
+      console.log(`is docker is ${is_docker}`);
     });
   } catch (err) {
     console.error("Error launching Puppeteer:", err);

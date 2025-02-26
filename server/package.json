@@ -4,10 +4,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-engine": "cd ../../ace-engine && npm run build",
-    "build": "tsc",
-    "start": "node dist/server.js",
-    "dev": "nodemon --exec ts-node src/server.ts"
+    "build-engine": "cd ../ace-engine && npm run build && cp dist/ace.js ../server/src/engine/ace.js && cd ../server",
+    "build": "bun run tsc",
+    "start": "bun run dist/server.js",
+    "dev": "bun run src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +16,7 @@
   "dependencies": {
     "express": "^4.21.2",
     "jsdom": "^26.0.0",
-    "puppeteer": "^24.2.1"
+    "puppeteer-core": "^24.3.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
