@@ -9,18 +9,30 @@ import * as puppeteer from 'puppeteer-core';
 const is_docker = process.env.IS_DOCKER && process.env.IS_DOCKER.toLowerCase() === 'true';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
+
+let browserRequestCount = 0;
+const MAX_REQUESTS_PER_BROWSER = 1;
 
 app.use(bodyParser.json());
 
 let browser: puppeteer.Browser;
 
-const asyncHandler = (fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) =>
-  (req: Request, res: Response, next: NextFunction) =>
-    Promise.resolve(fn(req, res, next)).catch(next);
+// const asyncHandler = (fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) =>
+//   (req: Request, res: Response, next: NextFunction) =>
+//     Promise.resolve(fn(req, res, next)).catch(next);
 
-app.get('/', (_req, res) => {
+app.get('/', async (_req, res) => {
+  console.log('Request received at / endpoint');
+  console.log('Request headers:', _req.headers);
+  console.log('Request IP:', _req.ip);
+
+  console.log("Hit hello, world")
   res.send('Hello, World!');
+});
+
+app.get('/health', (_req, res) => {
+  res.status(200).send('OK');
 });
 
 /**
@@ -36,42 +48,34 @@ app.get('/', (_req, res) => {
  * "guidelineIds": ["WCAG_2_2"]
 }
  */
-app.post("/scan", asyncHandler(async (req, res) => {
-  console.log("Scanning...");
-  const html: string = req.body.html;
-  const guidelineIds: string | string[] = req.body.guidelineIds || process.env.DEFAULT_GUIDELINE_IDS;
-  const report: Report = await aceCheck(html, browser, guidelineIds);
-  console.log("Scan complete.");
-  res.json(report);
-}));
+// app.post("/scan", async (req, res) => {
+//   try {
+//     console.log("Scanning...");
+//     browserRequestCount++;
 
-app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  console.error(err);
-  res.status(500).json({ error: err.message });
+//     const html: string = req.body.html;
+//     const guidelineIds: string | string[] = req.body.guidelineIds || process.env.DEFAULT_GUIDELINE_IDS;
+//     const report: Report = await aceCheck(html, guidelineIds);
+//     console.log("Scan complete.");
+//     res.json(report);
+//   } catch (err: any) {
+//     console.log("Error scanning:", err);
+//     console.error("Error scanning:", err);
+//     res.status(500).json({ error: err.message });
+//   }
+// });
+
+// app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+//   console.error(err);
+//   res.status(500).json({ error: err.message });
+// });
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Equal access server is running on port ${PORT}`);
+  console.log(`is docker is ${is_docker}`);
 });
 
-(async () => {
-  try {
-    browser = is_docker ? await puppeteer.launch({
-      headless: true,
-      defaultViewport: null,
-      executablePath: '/usr/bin/google-chrome',
-      args: ['--no-sandbox']
-    }) : await puppeteer.launch();
-    app.listen(PORT, () => {
-      console.log(`Equal access server is running on port ${PORT}`);
-      console.log(`is docker is ${is_docker}`);
-    });
-  } catch (err) {
-    console.error("Error launching Puppeteer:", err);
-    process.exit(1);
-  }
-})();
-
-process.on('SIGINT', async () => {
-  console.log('Shutting down...');
-  if (browser) {
-    await browser.close();
-  }
-  process.exit();
-});
+// process.on('SIGINT', async () => {
+//   console.log('Shutting down...');
+//   process.exit();
+// });

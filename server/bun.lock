@@ -4,6 +4,7 @@
     "": {
       "name": "server",
       "dependencies": {
+        "chrome-finder": "^1.0.7",
         "express": "^4.21.2",
         "jsdom": "^26.0.0",
         "puppeteer-core": "^24.3.0",
@@ -145,6 +146,8 @@
     "callsites": ["callsites@3.1.0", "", {}, "sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ=="],
 
     "chokidar": ["chokidar@3.6.0", "", { "dependencies": { "anymatch": "~3.1.2", "braces": "~3.0.2", "glob-parent": "~5.1.2", "is-binary-path": "~2.1.0", "is-glob": "~4.0.1", "normalize-path": "~3.0.0", "readdirp": "~3.6.0" }, "optionalDependencies": { "fsevents": "~2.3.2" } }, "sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw=="],
+
+    "chrome-finder": ["chrome-finder@1.0.7", "", {}, "sha512-Cxdl9ns86sXKMU5jIWy7rb0jX0SlWBNVV30/eBvtYCSx+GfLOM+MyODWd6gv72QONFWPbEmere8VL/xVIrTzmA=="],
 
     "chromium-bidi": ["chromium-bidi@2.0.0", "", { "dependencies": { "mitt": "^3.0.1", "zod": "^3.24.1" }, "peerDependencies": { "devtools-protocol": "*" } }, "sha512-8VmyVj0ewSY4pstZV0Y3rCUUwpomam8uWgHZf1XavRxJEP4vU9/dcpNuoyB+u4AQxPo96CASXz5CHPvdH+dSeQ=="],
 

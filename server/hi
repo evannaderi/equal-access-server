@@ -1,3 +1,8 @@
+weirdest problem ever. this simple express server on bun runs fine locally, but in docker usually starts up with first 2 logs, but then doesnt respond to any http req
+uest on  get /. it just takes forever to load, and doesnt even show first log in / function. are there any low level debugging things for how express works that i can do to try to isolate 
+the issue? I am positive that docker is running on port 3000, and mapping to port 3000.
+
+THis it the dfile:
 FROM oven/bun:latest
 
 WORKDIR /app
@@ -22,3 +27,5 @@ COPY . .
 EXPOSE 3000
 
 CMD ["bun", "run", "src/server.ts"]
+
+
