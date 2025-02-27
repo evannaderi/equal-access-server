@@ -59,10 +59,10 @@ The server is containerized for ease of deployment. It runs in a Node.js runtime
 
 ### Building the Docker Image
 
-Run this command in the repository root:
+Run this command in /server:
 
 ```bash
-docker build -t udoit-equal-access .
+docker build --platform linux/amd64 -t ace .
 ```
 
 ### Running the Container
@@ -70,7 +70,7 @@ docker build -t udoit-equal-access .
 To start the container:
 
 ```bash
-docker run -d -p 3000:3000 udoit-equal-access
+docker run -d --platform linux/amd64 -p 3000:3000 ace
 ```
 
 ---

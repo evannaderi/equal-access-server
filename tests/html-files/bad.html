@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Bad Accessibility Test</title>
+  <style>
+    body {
+      background-color: lightgray;
+      color: lightyellow; /* Poor contrast */
+      font-family: Arial, sans-serif;
+    }
+    .click-here {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bad Accessibility Example</h1>
+
+  <!-- Missing alt text -->
+  <img src="image.jpg">
+
+  <!-- Clickable text without button or link -->
+  <div class="click-here">Click here</div>
+
+  <!-- No heading structure -->
+  <p>This is a paragraph pretending to be a heading.</p>
+
+  <!-- No label for input -->
+  <input type="text" placeholder="Enter your name">
+
+  <!-- Non-descriptive link text -->
+  <a href="https://example.com">Click here</a>
+
+  <!-- Table without headers -->
+  <table border="1">
+    <tr><td>Row 1</td><td>Data</td></tr>
+    <tr><td>Row 2</td><td>More Data</td></tr>
+  </table>
+
+  <!-- No ARIA roles for a modal -->
+  <div id="modal" style="display:none; position:fixed; background:white; width:300px; height:200px;">
+    <span>X</span> <!-- No button, just an X for closing -->
+    <p>Modal content without proper focus handling.</p>
+  </div>
+
+</body>
+</html>

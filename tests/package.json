@@ -12,7 +12,8 @@
   },
   "scripts": {
     "build-test": "tsc",
-    "test": "node test.js"
+    "test": "node test.js",
+    "test2": "node test copy.js"
   },
   "keywords": [],
   "author": "",
